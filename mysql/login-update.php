@@ -1,7 +1,12 @@
-<?php include "db.php"; ?>
- <?php include "functions.php"; ?>
 <?php
-updateTable();
+include "db.php" ;
+?>
+<?php include "functions.php"; ?>
+
+<?php
+
+$craetObj3 = new updateTable();
+$craetObj3->updateUser();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +35,8 @@ updateTable();
 <div class="form-group"> 
 <select name="id" id="">
 <?php 
-showAllData();
+$craetObj4 = new showAllData();
+$craetObj4->read();
 ?>
 </select>
 

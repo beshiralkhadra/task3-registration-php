@@ -1,5 +1,8 @@
 
-<?php include_once "db.php" ;?>
+<?php
+session_start();
+include_once "db.php" ;
+?>
 <?php 
 
 
@@ -14,7 +17,8 @@ class create extends db {
  
     public function getUsers(){
         if(isset($_POST['submit'] )){
-            $username = test_input($_POST['username']);
+
+                $username = test_input($_POST['username']);
                 $email = test_input($_POST['email']);
                 $password = test_input($_POST['password']);
                 $repeatPass = test_input($_POST['repeatPass']) ;
@@ -23,19 +27,23 @@ class create extends db {
                 $emailRegex = "/^[^ ]+@[^ ]+\.[a-z]{2,3}$/";
               
                 if(preg_match($usernamePattern,$username) && preg_match($emailRegex,$email ) && strlen($password) >= 8 && $password == $repeatPass ){
-        $sql ="SELECT email FROM registredusers WHERE email='$email'";
-        $stmt =$this->connect()->prepare($sql);
-        $stmt = $this -> connect() ->query($sql);
-        if($stmt ->fetchColumn()> 0){
-            echo '<script type="text/javascript">alert("email exist")</script>';
-           }else{
+
+                  $sql ="SELECT email FROM registredusers WHERE email='$email'";
+                  $stmt =$this->connect()->prepare($sql);
+                  $stmt = $this -> connect() ->query($sql);
+                if($stmt ->fetchColumn()> 0){
+
+                   echo '<script type="text/javascript">alert("email exist")</script>';
+
+                }else{
       
-            $query ="INSERT INTO registredusers (username,email,password,repeatPass)";
-            $query .="VALUES (:username ,:email ,:password ,:repeatPass)";
-            $stmt =$this->connect()->prepare($query);
-            $stmt ->execute(['username' =>$username ,'email'=>$email ,'password' =>$password ,'repeatPass'=>$repeatPass]);
-            // mysqli_query($connection ,$query);
-            header("location:login.php");
+                  $query ="INSERT INTO registredusers (username,email,password,repeatPass)";
+                  $query .="VALUES (?,? ,?,?)";
+                  $stmt =$this->connect()->prepare($query);
+                  $stmt ->execute([$username ,$email ,$password ,$repeatPass]);
+           
+                   header("location:login.php");
+                  
 
            }
           
@@ -89,78 +97,154 @@ class create extends db {
 
 // }
 
-function login(){
+class login extends db {
 
+    public function loggedUsers(){
 
-    if(isset($_POST['submit'] )){
+        if(isset($_POST['submit'] )){
 
-        // echo "<pre>";
-        // print_r(mysqli_fetch_assoc($query));
-        // "</pre>";
-        global $pdo;
+            
+       
+    
+            $email = test_input($_POST['email']);
+            $password = test_input($_POST['password']);
+            $emailRegex = "/^[^ ]+@[^ ]+\.[a-z]{2,3}$/";
+            if(preg_match($emailRegex,$email )){
+    
+                $query ="SELECT * FROM registredusers WHERE (email = '$email') AND (password = '$password')  ";
+                $stmt =$this->connect()->prepare($query);
+                $stmt = $this -> connect() ->query($query); //we run it
+               
+                        if($stmt ->fetchColumn()> 0){  
+                            $stmt->execute();
+                            $result = $stmt->fetchAll(); //we set the default behavior in db file (fetch mode) ,also you use fetch without all
+                           $isAdmin=$result[0]['is_admin'];
+                           echo $isAdmin;
+                           if(!$isAdmin){
 
-        $email = test_input($_POST['email']);
-        $password = test_input($_POST['password']);
-        $emailRegex = "/^[^ ]+@[^ ]+\.[a-z]{2,3}$/";
-        if(preg_match($emailRegex,$email ) && strlen($password) >= 8){
-
-            $query ="SELECT * FROM registredusers WHERE (email = '$email') AND (password = '$password')  ";
-            $stmt = $pdo->prepare($query);
-            $result = $pdo ->query($query);
-            $stmt->execute();
-            $secondRes=$stmt->fetchAll(PDO::FETCH_ASSOC);
-                print_r($secondRes);
-                    if($result ->fetchColumn()> 0 ){   
-                        // header("location:register.php");
-                        echo 'suc';
-                    }else{
-                        echo '<script type="text/javascript">alert("incorrect email or password")</script>';
-                    }
-        }else{
-            echo '<script type="text/javascript">alert("please check your information")</script>';
+                               $_SESSION['loggedUser'] = $result[0]; //if you use only fetch ,there is non need for '[0]' anymore
+                               header("location:welcoming.php");
+                           }else{
+                            header("location:cms/table.php");
+                           }
+                
+                
+                        }else{
+                            echo '<script type="text/javascript">alert("incorrect email or password")</script>';
+                        }
+            }else{
+                echo '<script type="text/javascript">alert("please check your information")</script>';
+            }
+    
         }
-
     }
+
 }
 
-//  function updateTable(){
-//     if(isset($_POST['submit'])){
-//     global $connection;
-//     $username= $_POST['username'];
-//     $password= $_POST['password'];
-//    $id = $_POST['id']; 
+// function login(){
 
-// // $query = "UPDATE users SET[username  = '$username', password = '$password'] WHERE id = $id";
-   
-//    $query = "UPDATE users SET ";//make sure to put space set
-//    $query .= "username = '$username', "; //first username coming from database 'colounm' 
-//    $query .= "password = '$password' ";  //first password coming from database 'colounm'
-//    $query .= "WHERE id = $id ";  //first id coming from database 'colounm'
-   
-//      $result = mysqli_query($connection , $query);
-   
-//      if (!$result){
-//          die('query failed' . mysquli_error($connection));
-//      }
+
+//     if(isset($_POST['submit'] )){
+
+//         // echo "<pre>";
+//         // print_r(mysqli_fetch_assoc($query));
+//         // "</pre>";
+//         global $pdo;
+
+//         $email = test_input($_POST['email']);
+//         $password = test_input($_POST['password']);
+//         $emailRegex = "/^[^ ]+@[^ ]+\.[a-z]{2,3}$/";
+//         if(preg_match($emailRegex,$email ) && strlen($password) >= 8){
+
+//             $query ="SELECT * FROM registredusers WHERE (email = '$email') AND (password = '$password')  ";
+//             $stmt = $pdo->prepare($query);
+//             $result = $pdo ->query($query);
+//             $stmt->execute();
+//             $secondRes=$stmt->fetchAll(PDO::FETCH_ASSOC);
+//                 print_r($secondRes);
+//                     if($result ->fetchColumn()> 0 ){   
+//                         // header("location:register.php");
+//                         echo 'suc';
+//                     }else{
+//                         echo '<script type="text/javascript">alert("incorrect email or password")</script>';
+//                     }
+//         }else{
+//             echo '<script type="text/javascript">alert("please check your information")</script>';
+//         }
+
 //     }
-//  }
+// }
+class showAllData extends db{
+    
+    public function read(){
+        
+        $query ="SELECT * FROM registredusers";
+        $stmt =$this->connect()->prepare($query);
+        $stmt = $this -> connect() ->query($query);
+        if (!$stmt){
+            die ('failed'); //stop every thing
+        }
+        while($row = $stmt->fetch()){
+            $id = $row ['id'];
+          echo "<option value='$id'>$id</option> ";
+        
+        }
+    }
+}
+ class updateTable extends db {
 
-//  function deleteRows(){
-//     global $connection;
-//     $username= $_POST['username'];
-//     $password= $_POST['password'];
-//    $id = $_POST['id']; 
+
+    public function updateUser(){
+
+        if(isset($_POST['submit'])){
+
+        $username= $_POST['username'];
+        $password= $_POST['password'];
+        $id = $_POST['id'];
+  
+    //    $query ="UPDATE registredusers SET (username = '$username') AND (password = '$password') WHERE id= $id  ";
+       $query = "UPDATE registredusers SET ";//make sure to put space set
+       $query .= "username = '$username', "; //first username coming from database 'colounm' 
+       $query .= "password = '$password' ";  //first password coming from database 'colounm'
+       $query .= "WHERE id = $id ";  //first id coming from database 'colounm'
+       
+       $stmt =$this->connect()->prepare($query);
+       $stmt = $this -> connect() ->query($query);
+       
+         if (!$stmt){
+            echo 'failed';
+         }else{
+            header("location:../mysql/cms/table.php");
+         }
+        }
+    }
+ }
+ 
+ 
+
+
+class delete extends db {
+
+    public function deleteUser( ){
    
-//    $query = "DELETE FROM users ";//make sure to put space
-//    $query .= "WHERE id = $id ";  //first id coming from database 'colounm'
+       
+           if(isset($_POST['delete-user'])){
+
+               $id = $_POST['delete-user'];
+               $query = "DELETE FROM registredusers WHERE id='$id'";//make sure to put space
+               $stmt =$this->connect()->prepare($query);
+               $stmt = $this -> connect() ->query($query); 
+               
+                 if ($stmt){
+                   echo 'deklkl';
+                    // echo '<script type="text/javascript">alert("user deleted")</script>';
+                 }
+           }
+                
+        
+
    
-//      $result = mysqli_query($connection , $query);
-   
-//      if (!$result){
-//          die('query failed' . mysquli_error($connection));
-//      }
-   
-//  }
+ }}
 // function craete(){
 //     if(isset($_POST['submit'] )){
 

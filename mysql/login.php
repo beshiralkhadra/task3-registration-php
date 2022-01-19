@@ -2,7 +2,8 @@
 <?php include "db.php"; ?>
 <?php include "functions.php"; ?>
 <?php 
-login();
+$loggedObj =new login();
+$loggedObj->loggedUsers();
 ?>
 
 
