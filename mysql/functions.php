@@ -41,11 +41,8 @@ class create extends db {
                        $query .="VALUES (?,? ,?,?)";
                        $stmt =$this->connect()->prepare($query);
                        $stmt ->execute([$username ,$email ,$password ,$repeatPass]);
-           
-                   header("location:login.php");
-                  
-
-           }
+                       header("location:signin.php");
+                     }
           
         } else{
             echo '<script type="text/javascript">alert("please check your information")</script>';
@@ -104,8 +101,6 @@ class login extends db {
         if(isset($_POST['submit'] )){
 
             
-       
-    
             $email = test_input($_POST['email']);
             $password = test_input($_POST['password']);
             $emailRegex = "/^[^ ]+@[^ ]+\.[a-z]{2,3}$/";
@@ -134,9 +129,9 @@ class login extends db {
                              $stmt = $this -> connect() ->query($query);
 
                             $_SESSION['loggedUser'] = $result[0]; //if you use only fetch ,there is non need for '[0]' anymore
-                               header("location:welcoming.php");
+                               header("location:../welcoming.php");
                            }else{
-                            header("location:cms/table.php");
+                            header("location:table.php");
                            }
                 
                 

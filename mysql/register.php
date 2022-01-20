@@ -29,13 +29,13 @@ $craetObj->getUsers();
 <div class="msg1"></div>
 
 <div class="form-group">
-<label for='username'>Email</label>
+<label for='email'>Email</label>
 <input type="email" class="form-control" id="email-field" name='email' >
 </div>
 <div class="msg2"></div>
 
 <div class="form-group">
-<label for='username'>Paswword</label>
+<label for='password'>Paswword</label>
 <input type="password" class="form-control" id="password-field" name='password' >
 </div>
 <div class="msg3"></div>

@@ -5,8 +5,6 @@
 $loggedObj =new login();
 $loggedObj->loggedUsers();
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
