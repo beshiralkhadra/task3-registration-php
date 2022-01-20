@@ -525,7 +525,7 @@ class show extends db{
                echo   '<td>' .$user['email'].'</td>' ;
                echo   '<td>' .$user['password'].'</td>' ;
                echo   '<td>' .$user['date created'].'</td>' ;
-               echo   '<td>' .$user['date last login'].'</td>' ;?>
+               echo   '<td>' .$user['last_login_date'].'</td>' ;?>
                <form method='post' action='../login-update.php'>
                    <?php 
                    

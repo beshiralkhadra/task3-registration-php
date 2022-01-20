@@ -37,10 +37,10 @@ class create extends db {
 
                 }else{
       
-                  $query ="INSERT INTO registredusers (username,email,password,repeatPass)";
-                  $query .="VALUES (?,? ,?,?)";
-                  $stmt =$this->connect()->prepare($query);
-                  $stmt ->execute([$username ,$email ,$password ,$repeatPass]);
+                  $query ="INSERT INTO registredusers (username,email,password,repeatPass)";     
+                       $query .="VALUES (?,? ,?,?)";
+                       $stmt =$this->connect()->prepare($query);
+                       $stmt ->execute([$username ,$email ,$password ,$repeatPass]);
            
                    header("location:login.php");
                   
@@ -118,11 +118,22 @@ class login extends db {
                         if($stmt ->fetchColumn()> 0){  
                             $stmt->execute();
                             $result = $stmt->fetchAll(); //we set the default behavior in db file (fetch mode) ,also you use fetch without all
-                           $isAdmin=$result[0]['is_admin'];
-                           echo $isAdmin;
+                           $isAdmin=$result[0]['is_admin']; 
+                            
+                 
                            if(!$isAdmin){
+                            $id=$result[0]['id'];
+                        
+                            $date = date('Y-m-d');
+                            $time = date("H:i:s", time());
+                            $lastLogin = "$date, $time";
+                           
+                            $query ="UPDATE registredusers SET last_login_date='$lastLogin' WHERE id='$id' ";
+                             
+                             $stmt =$this->connect()->prepare($query);
+                             $stmt = $this -> connect() ->query($query);
 
-                               $_SESSION['loggedUser'] = $result[0]; //if you use only fetch ,there is non need for '[0]' anymore
+                            $_SESSION['loggedUser'] = $result[0]; //if you use only fetch ,there is non need for '[0]' anymore
                                header("location:welcoming.php");
                            }else{
                             header("location:cms/table.php");
@@ -202,11 +213,11 @@ class showAllData extends db{
         $password= $_POST['password'];
         $id = $_POST['id'];
   
-    //    $query ="UPDATE registredusers SET (username = '$username') AND (password = '$password') WHERE id= $id  ";
-       $query = "UPDATE registredusers SET ";//make sure to put space set
-       $query .= "username = '$username', "; //first username coming from database 'colounm' 
-       $query .= "password = '$password' ";  //first password coming from database 'colounm'
-       $query .= "WHERE id = $id ";  //first id coming from database 'colounm'
+       $query ="UPDATE registredusers SET username = '$username' , password = '$password' WHERE id= $id  ";
+    //    $query = "UPDATE registredusers SET ";//make sure to put space set
+    //    $query .= "username = '$username', "; //first username coming from database 'colounm' 
+    //    $query .= "password = '$password' ";  //first password coming from database 'colounm'
+    //    $query .= "WHERE id = $id ";  //first id coming from database 'colounm'
        
        $stmt =$this->connect()->prepare($query);
        $stmt = $this -> connect() ->query($query);
