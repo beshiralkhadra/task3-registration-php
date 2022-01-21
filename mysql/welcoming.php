@@ -37,9 +37,9 @@ session_start();
                         <div class="form-row">
 
                             <div class="col-12 justify-content-center d-flex ">
-                                <a class="btn btn-block btn-lg btn-primary m-2" href='register.php'>Register</a>
-                                <a class="btn btn-block btn-lg btn-primary m-2" href='login.php'>Login</a>
-                                <a class="btn btn-block btn-lg btn-primary m-2" href='login.php' name="logout" onclick="<?php destroy() ?>">Logout</a>
+                                <a class="btn btn-block btn-lg btn-primary m-2" href='cms/register.php'>Register</a>
+                                <a class="btn btn-block btn-lg btn-primary m-2" href='cms/signin.php'>Login</a>
+                                <a class="btn btn-block btn-lg btn-primary m-2" href='cms/signin.php' name="logout" onclick="<?php destroy() ?>">Logout</a>
                             </div>
 
                         </div>
