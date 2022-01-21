@@ -2,6 +2,7 @@ let username = document.querySelector("#username-field");
 let email = document.querySelector("#email-field");
 let password = document.querySelector("#password-field");
 let repeatPassword = document.querySelector("#repeatPass-field");
+let date = document.querySelector("#date-field");
 let submitBtn = document.querySelector("#submit-btn");
 
 let msg1 = document.querySelector(".msg1");

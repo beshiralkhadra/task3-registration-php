@@ -133,6 +133,17 @@ $craetObj->getUsers();
                     />
                   </div>
                   <div class="msg4"></div>
+                  <div class="form-group">
+                    <label>Age</label>
+                    <input
+                      class="au-input au-input--full"
+                      type="date"
+                      name="date"
+                      max="2005-12-31"
+                      id="date-field"
+                    />
+                  </div>
+                  <div class="msg5"></div>
                 
                   <input
                     class="au-btn au-btn--block au-btn--green m-b-20"

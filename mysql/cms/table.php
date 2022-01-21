@@ -382,7 +382,7 @@ include_once "../db.php" ;
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/beshir-profile.jpeg" alt="John Doe" />
+                                            <img src="images/icon/beshir-profile.jpeg" alt="beshir" />
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#">Beshir</a>
@@ -391,7 +391,7 @@ include_once "../db.php" ;
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                        <img src="images/icon/beshir-profile.jpeg" alt="John Doe" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
